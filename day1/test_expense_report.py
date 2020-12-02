@@ -8,6 +8,7 @@ class MyTestCase(unittest.TestCase):
         expenses = [1721, 979, 366, 299, 675, 1456]
         expected = 514579
         answer = expense_report.calculate(expenses, 2020)
+        self.assertEqual(expected, answer)
 
 
 
