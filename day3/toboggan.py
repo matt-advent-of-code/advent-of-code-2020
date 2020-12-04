@@ -1,4 +1,11 @@
+import numpy
+
 TREE = '#'
+
+
+def calculate(route: str, slopes: list) -> int:
+    trees = [count_trees(route, slope) for slope in slopes]
+    return numpy.prod(trees)
 
 
 def count_trees(route: str, slope: tuple) -> int:
@@ -23,4 +30,5 @@ def parse(route: str) -> list:
 
 if __name__ == '__main__':
     with open('input.txt') as data:
-        print(count_trees(data.read(), (3, 1)))
+        slopes = [(1,1), (3,1), (5,1), (7,1), (1,2)]
+        print(calculate(data.read(), slopes))
