@@ -32,7 +32,7 @@ def has_valid_fields(passport: dict) -> bool:
 
 
 class Validator:
-    def is_valid(self, field: dict) -> bool:
+    def is_valid(self, field: str) -> bool:
         return True
 
 
@@ -42,7 +42,7 @@ class BirthYearValidator(Validator):
 
 
 class HeightValidator(Validator):
-    def is_valid(self, height: dict) -> bool:
+    def is_valid(self, height: str) -> bool:
         if height.endswith('in'):
             return 59 <= int(height[:-2]) <= 76
         elif height.endswith('cm'):
@@ -64,7 +64,7 @@ class EyeColorValidator(Validator):
 
 
 class PidValidator(Validator):
-    def is_valid(self, pid: dict) -> bool:
+    def is_valid(self, pid: str) -> bool:
         return re.match("[0-9]{9}$", pid)
 
 
