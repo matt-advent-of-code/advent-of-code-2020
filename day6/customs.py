@@ -1,9 +1,19 @@
+from functools import reduce
+
+
 def number_of_yes(group_answers: list) -> int:
-    questions_answered_yes = set()
+    questions_answered_yes = {}
     for individual_answer in group_answers:
         for answer in individual_answer:
-            questions_answered_yes.add(answer)
-    return len(questions_answered_yes)
+            if answer in questions_answered_yes:
+                questions_answered_yes[answer] = questions_answered_yes[answer] + 1
+            else:
+                questions_answered_yes[answer] = 1
+    total = 0
+    for answer in questions_answered_yes:
+        if questions_answered_yes[answer] == len(group_answers):
+            total+=1
+    return total
 
 
 def parse(answers: str) -> list:
