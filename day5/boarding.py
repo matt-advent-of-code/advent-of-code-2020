@@ -25,9 +25,14 @@ def calculate_column(boarding_pass_sections: str, seat_range) -> int:
 
 
 def calculate_seat_id(boarding_pass: str) -> int:
+    row, column = calculate_seat(boarding_pass)
+    return row * 8 + column
+
+
+def calculate_seat(boarding_pass: str) -> tuple:
     row = calculate_row(boarding_pass[:7], (0, 127))
     column = calculate_column(boarding_pass[7:], (0, 7))
-    return row * 8 + column
+    return row, column
 
 
 def __calculate_seat_range(section: str, seat_range: tuple, front_identifier: str) -> tuple:
@@ -38,10 +43,14 @@ def __calculate_seat_range(section: str, seat_range: tuple, front_identifier: st
 
 
 if __name__ == '__main__':
-    max_seat_id = 0
     with open('input.txt') as data:
-        for boarding_pass in data.readlines():
-            seat_id = calculate_seat_id(boarding_pass)
-            if seat_id > max_seat_id:
-                max_seat_id = seat_id
-    print(max_seat_id)
+        boarding_passes = data.readlines()
+        seat_ids = [calculate_seat_id(boarding_pass) for boarding_pass in boarding_passes]
+        possible_seat_ids = []
+        for row in range(1,126):
+            for column in range(0,7):
+                possible_seat_ids.append(row * 8 + column)
+
+        for seat in possible_seat_ids:
+            if seat + 1 in seat_ids and seat -1 in seat_ids and seat not in seat_ids:
+                print(seat)
