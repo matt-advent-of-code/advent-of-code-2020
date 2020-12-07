@@ -16,13 +16,13 @@ faded blue bags contain no other bags.
 dotted black bags contain no other bags."""
 
         expected_bags = {
-            'light red': ['bright white', 'muted yellow'],
-            'dark orange': ['bright white', 'muted yellow'],
-            'bright white': ['shiny gold'],
-            'muted yellow': ['shiny gold', 'faded blue'],
-            'shiny gold': ['dark olive', 'vibrant plum'],
-            'dark olive': ['faded blue', 'dotted black'],
-            'vibrant plum': ['faded blue', 'dotted black'],
+            'light red': [{'bright white': 1}, {'muted yellow': 2}],
+            'dark orange': [{'bright white': 3}, {'muted yellow': 4}],
+            'bright white': [{'shiny gold': 1}],
+            'muted yellow': [{'shiny gold': 2}, {'faded blue': 9}],
+            'shiny gold': [{'dark olive': 1}, {'vibrant plum': 2}],
+            'dark olive': [{'faded blue': 3}, {'dotted black': 4}],
+            'vibrant plum': [{'faded blue': 5}, {'dotted black': 6}],
             'faded blue': [],
             'dotted black': []
         }
@@ -138,6 +138,77 @@ dotted black bags contain no other bags."""
             'dotted black': []
         }
         self.assertFalse(bag.contains(bag_to_check, 'shiny gold', bags))
+
+
+    def test_count_bags(self):
+        bag_to_count = 'faded blue'
+        bags = {
+            'light red': [{'bright white': 1}, {'muted yellow': 2}],
+            'dark orange': [{'bright white': 3}, {'muted yellow': 4}],
+            'bright white': [{'shiny gold': 1}],
+            'muted yellow': [{'shiny gold': 2}, {'faded blue': 9}],
+            'shiny gold': [{'dark olive': 1}, {'vibrant plum': 2}],
+            'dark olive': [{'faded blue': 3}, {'dotted black': 4}],
+            'vibrant plum': [{'faded blue': 5}, {'dotted black': 6}],
+            'faded blue': [],
+            'dotted black': []
+        }
+        expected = 0
+        count = bag.count(bag_to_count, bags)
+        self.assertEqual(expected, count)
+
+    def test_count_bags_plum(self):
+        bag_to_count = 'vibrant plum'
+        bags = {
+            'light red': [{'bright white': 1}, {'muted yellow': 2}],
+            'dark orange': [{'bright white': 3}, {'muted yellow': 4}],
+            'bright white': [{'shiny gold': 1}],
+            'muted yellow': [{'shiny gold': 2}, {'faded blue': 9}],
+            'shiny gold': [{'dark olive': 1}, {'vibrant plum': 2}],
+            'dark olive': [{'faded blue': 3}, {'dotted black': 4}],
+            'vibrant plum': [{'faded blue': 5}, {'dotted black': 6}],
+            'faded blue': [],
+            'dotted black': []
+        }
+        expected = 11
+        count = bag.count(bag_to_count, bags)
+        self.assertEqual(expected, count)
+
+
+    def test_count_dark_olive(self):
+        bag_to_count = 'dark olive'
+        bags = {
+            'light red': [{'bright white': 1}, {'muted yellow': 2}],
+            'dark orange': [{'bright white': 3}, {'muted yellow': 4}],
+            'bright white': [{'shiny gold': 1}],
+            'muted yellow': [{'shiny gold': 2}, {'faded blue': 9}],
+            'shiny gold': [{'dark olive': 1}, {'vibrant plum': 2}],
+            'dark olive': [{'faded blue': 3}, {'dotted black': 4}],
+            'vibrant plum': [{'faded blue': 5}, {'dotted black': 6}],
+            'faded blue': [],
+            'dotted black': []
+        }
+        expected = 7
+        count = bag.count(bag_to_count, bags)
+        self.assertEqual(expected, count)
+
+
+    def test_count_shiny_gold(self):
+        bag_to_count = 'shiny gold'
+        bags = {
+            'light red': [{'bright white': 1}, {'muted yellow': 2}],
+            'dark orange': [{'bright white': 3}, {'muted yellow': 4}],
+            'bright white': [{'shiny gold': 1}],
+            'muted yellow': [{'shiny gold': 2}, {'faded blue': 9}],
+            'shiny gold': [{'dark olive': 1}, {'vibrant plum': 2}],
+            'dark olive': [{'faded blue': 3}, {'dotted black': 4}],
+            'vibrant plum': [{'faded blue': 5}, {'dotted black': 6}],
+            'faded blue': [],
+            'dotted black': []
+        }
+        expected = 32
+        count = bag.count(bag_to_count, bags)
+        self.assertEqual(expected, count)
 
 
 if __name__ == '__main__':
