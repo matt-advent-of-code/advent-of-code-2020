@@ -31,6 +31,14 @@ class MyTestCase(unittest.TestCase):
         invalid_number = xmas.first_invalid(data, preamble_size)
         self.assertEqual(expected_number, invalid_number)
 
+    def test_find_contiguous_numbers(self):
+        data = [35, 20, 15, 25, 47, 40, 62, 55, 65, 95, 102, 117, 150, 182, 127, 219, 299, 277, 309, 576]
+        invalid_number = 127
+        expected_contiguous_numbers = [15,25,47,40]
+
+        contiguous_numbers = xmas.find_contiguous_numbers(data, invalid_number)
+        self.assertEqual(expected_contiguous_numbers, contiguous_numbers)
+
 
 if __name__ == '__main__':
     unittest.main()

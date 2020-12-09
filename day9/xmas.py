@@ -17,8 +17,19 @@ def first_invalid(data: list, preamble_size: int) -> int:
         preamble.pop(0)
         return first_invalid(preamble + data, preamble_size)
 
+def find_contiguous_numbers(data: list, invalid_number: int) -> list:
+    sub_data = data[:data.index(invalid_number)]
+    for i, element in enumerate(sub_data):
+        contiguous_numbers = [element]
+        for j in range(i+1, len(sub_data)):
+            contiguous_numbers.append(sub_data[j])
+            if sum(contiguous_numbers) == invalid_number:
+                return contiguous_numbers
+
 
 if __name__ == '__main__':
     with open('input.txt') as data:
         numbers = [int(num) for num in data.readlines()]
-        print(first_invalid(numbers, 25))
+        invalid_num = first_invalid(numbers.copy(), 25)
+        contiguous_numbers = find_contiguous_numbers(numbers, invalid_num)
+        print(min(contiguous_numbers) + max(contiguous_numbers))
