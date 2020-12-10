@@ -7,9 +7,7 @@ def is_valid(value: int, preamble: list) -> bool:
 
 
 def first_invalid(data: list, preamble_size: int) -> int:
-    preamble = []
-    for i in range(preamble_size):
-        preamble.append(data.pop(0))
+    preamble = [data.pop(0) for i in range(preamble_size)]
     value = data[0]
     if not is_valid(value, preamble):
         return value
