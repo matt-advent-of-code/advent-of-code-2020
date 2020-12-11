@@ -62,16 +62,16 @@ L.LLLLL.LL"""
 ##########
 #.######.#
 #.#####.##"""
-        expected = """#.LL.L#.##
-#LLLLLL.L#
+        expected = """#.LL.LL.L#
+#LLLLLL.LL
 L.L.L..L..
-#LLL.LL.L#
-#.LL.LL.LL
-#.LLLL#.##
+LLLL.LL.LL
+L.LL.LL.LL
+L.LLLLL.LL
 ..L.L.....
-#LLLLLLLL#
+LLLLLLLLL#
 #.LLLLLL.L
-#.#LLLL.##"""
+#.LLLLL.L#"""
 
         seats = seat.parse(input)
         seats = seat.next_round(seats)
@@ -96,7 +96,28 @@ L.LLLLL.LL'''
             for j in i:
                 if j == '#':
                     count += 1
-        self.assertEqual(37, count)
+        self.assertEqual(26, count)
+
+
+    def test_find_visible_seats(self):
+        input = """#.##.##.##
+#######.##
+#.#.#..#..
+####.##.##
+#.##.##.##
+#.#####.##
+..#.#.....
+##########
+#.######.#
+#.#####.##"""
+
+        seats = seat.parse(input)
+
+        visible_seats = seat.find_visible_seats(seats, 3, 9)
+        expected_visible_seats = ['#', '#', '#', '#', '.', '.', '.', '#']
+        print(visible_seats)
+        self.assertEqual(expected_visible_seats, visible_seats)
+
 
 if __name__ == '__main__':
     unittest.main()
