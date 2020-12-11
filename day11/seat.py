@@ -2,9 +2,6 @@ import copy
 
 
 def parse(data: str) -> list:
-    for row in data.splitlines():
-        print(row)
-
     return [list(row) for row in data.splitlines()]
 
 
@@ -59,31 +56,6 @@ def get_rule(item: str) -> SeatRule:
         return FilledSeatRule()
     else:
         return SeatRule()
-
-
-def get_adjacent_seats(seats: list, i: int, j: int) -> list:
-    adjacent_seats = []
-    if (i - 1) >= 0:
-        if (j - 1) >= 0:
-            adjacent_seats.append(seats[i - 1][j - 1])
-        adjacent_seats.append(seats[i - 1][j])
-        if (j + 1) < len(seats[i - 1]):
-            adjacent_seats.append(seats[i - 1][j + 1])
-
-    if (j - 1) >= 0:
-        adjacent_seats.append(seats[i][j - 1])
-    if (j + 1) < len(seats[i]):
-        adjacent_seats.append(seats[i][j + 1])
-
-    if (i + 1) < len(seats):
-        if (j - 1) >= 0:
-            adjacent_seats.append(seats[i + 1][j - 1])
-        adjacent_seats.append(seats[i + 1][j])
-
-        if (j + 1) < len(seats[i + 1]):
-            adjacent_seats.append(seats[i + 1][j + 1])
-
-    return adjacent_seats
 
 
 def find_visible_seats(seats: list, i: int, j: int) -> list:
@@ -202,15 +174,11 @@ def find_upper_seat(seats: list, i: int, j: int) -> str:
 
 def run(data: str) -> list:
     seats = parse(data)
-    rounds = 1
     new_seats = next_round(seats)
-    print(to_string(new_seats))
-    print('\n')
+
     while new_seats != seats:
         seats = new_seats
         new_seats = next_round(seats)
-        print(to_string(new_seats))
-        print('\n')
 
     return new_seats
 
