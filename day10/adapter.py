@@ -1,3 +1,5 @@
+import networkx as nx
+
 def find_diffs(adapters: list) -> tuple:
     diffs = {}
     for i in range(1, len(adapters)):
@@ -10,27 +12,27 @@ def find_diffs(adapters: list) -> tuple:
 
 
 def find_arrangements(adapters: list) -> int:
+    graph = to_graph(adapters)
+    diGraph = nx.DiGraph()
+    diGraph.add_edges_from(graph)
+    return len(list(nx.all_simple_paths(diGraph, graph[0][0], graph[-1][0])))
+
+
+def to_graph(adapters: list) -> list:
     sorted_adapters = adapters.copy()
     sorted_adapters.append(0)
     sorted_adapters.sort()
     sorted_adapters.append(sorted_adapters[-1] + 3)
-    return __find_arrangements(sorted_adapters, 1)
+    print(sorted_adapters)
 
-
-def __find_arrangements(adapters: list, start: int) -> int:
-    sorted_adapters = adapters.copy()
-    sorted_adapters.sort()
-    number_of_arrangements = 0
-    diffs = find_diffs(adapters)
-    if max(list(diffs.keys())) <= 3:
-        for i in range(start, len(adapters) - 1):
-            adapters_copy = sorted_adapters.copy()
-            adapters_copy.pop(i)
-            number_of_arrangements += __find_arrangements(adapters_copy, i)
-        return 1 + number_of_arrangements
-    else:
-        return 0
-
+    graph = []
+    for i in range(len(sorted_adapters) -1):
+        j=i+1
+        while j < len(sorted_adapters) and sorted_adapters[j] - sorted_adapters[i] <=3:
+            graph.append((sorted_adapters[i], sorted_adapters[j]))
+            j+=1
+    print(graph)
+    return graph
 
 if __name__ == '__main__':
     with open('input.txt') as data:
