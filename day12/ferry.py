@@ -5,33 +5,31 @@ class Action:
 
 class NorthAction(Action):
     def act(self, action: str, ship):
-        ship.coordinates = (ship.coordinates[0], ship.coordinates[1] + int(action[1:]))
+        ship.waypoint = (ship.waypoint[0], ship.waypoint[1] + int(action[1:]))
 
 
 class SouthAction(Action):
     def act(self, action: str, ship):
-        ship.coordinates = (ship.coordinates[0], ship.coordinates[1] - int(action[1:]))
+        ship.waypoint = (ship.waypoint[0], ship.waypoint[1] - int(action[1:]))
 
 
 class EastAction(Action):
     def act(self, action: str, ship):
-        ship.coordinates = (ship.coordinates[0] + int(action[1:]), ship.coordinates[1])
+        ship.waypoint = (ship.waypoint[0] + int(action[1:]), ship.waypoint[1])
 
 
 class WestAction(Action):
     def act(self, action: str, ship):
-        ship.coordinates = (ship.coordinates[0] - int(action[1:]), ship.coordinates[1])
+        ship.waypoint = (ship.waypoint[0] - int(action[1:]), ship.waypoint[1])
 
 
 class TurnRightAction(Action):
     def act(self, action: str, ship):
-        direction = Ship.directions[ship.direction]
-        degree = int(action[1:])
-        degree = simplify_degree(degree)
-        new_direction = simplify_degree(direction + degree)
-        for key, value in Ship.directions.items():
-            if value == new_direction:
-                ship.direction = key
+        for degree in range((int(action[1:])), 0, -90):
+            relative_waypoint = calculate_relative_waypoint(ship.waypoint, ship.coordinates)
+            rotated_relative_waypoint = (relative_waypoint[1], -1 * relative_waypoint[0])
+            ship.waypoint = (ship.coordinates[0] + rotated_relative_waypoint[0], ship.coordinates[1]
+                             + rotated_relative_waypoint[1])
 
 
 def simplify_degree(degree: int):
@@ -47,21 +45,23 @@ class TurnLeftAction(TurnRightAction):
 
 class ForwardDirection(Action):
     def act(self, action: str, ship):
-        action = ship.direction + action[1:]
-        Ship.get_action(action).act(action, ship)
+        multiplier = int(action[1:])
+        relative_waypoint = calculate_relative_waypoint(ship.waypoint, ship.coordinates)
+        x = multiplier * relative_waypoint[0] + ship.coordinates[0]
+        y = multiplier * relative_waypoint[1] + ship.coordinates[1]
+        ship.coordinates = x, y
+        ship.waypoint = ship.coordinates[0] + relative_waypoint[0], ship.coordinates[1] + relative_waypoint[1]
+
+
+def calculate_relative_waypoint(waypoint: tuple, coordinates: tuple):
+    return waypoint[0] - coordinates[0], waypoint[1] - coordinates[1]
 
 
 class Ship:
-    directions = {
-        'E': 0,
-        'S': 90,
-        'W': 180,
-        'N': 270
-    }
 
-    def __init__(self, coordinates: tuple, direction: str):
+    def __init__(self, coordinates: tuple, waypoint: tuple):
         self.coordinates = coordinates
-        self.direction = direction
+        self.waypoint = waypoint
 
     def move(self, action: str):
         Ship.get_action(action).act(action, self)
@@ -88,7 +88,7 @@ class Ship:
 
 if __name__ == '__main__':
     with open('input.txt') as data:
-        ship = Ship((0, 0), 'E')
+        ship = Ship((0, 0), (10,1))
         for direction in data.readlines():
             ship.move(direction)
 
