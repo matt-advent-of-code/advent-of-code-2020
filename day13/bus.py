@@ -1,4 +1,3 @@
-import numpy
 def arrival_time_time_for_bus(arrival_time: int, bus):
     time = bus
     while time <= arrival_time:
@@ -23,9 +22,6 @@ def solve(bus: dict, arrival_time: int) -> int:
 
 
 def earliest_subsequent_timestamp(busses: list) -> int:
-    first_bus = int(busses[0])
-    timestamp = first_bus
-
     rate = int(busses[0])
     timestamp = rate
     busses_to_check = []
