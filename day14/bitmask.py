@@ -1,22 +1,41 @@
 import re
+
 global mask
 mask = ''
 mem = {}
 
 
 def put(key, value: int):
-    binary_value = '{0:036b}'.format(value)
-    masked_value = apply_mask(binary_value)
-    value = int(masked_value, 2)
-    mem[key] = value
+    binary_value = '{0:036b}'.format(key)
+    keys = apply_mask(binary_value)
+    for key in keys:
+        key = int(key, 2)
+        mem[key] = value
 
 
 def get(key) -> int:
     return mem[key]
 
 
-def apply_mask(value: str) -> str:
-    return "".join([mask_index(e,i) for i, e in enumerate(list(value))])
+def apply_mask(value: str) -> list:
+    keys = ['']
+    for i,character in enumerate(list(mask)):
+        if character == 'X':
+            new_keys = []
+            for key in keys:
+                new_keys.append(key + '0')
+                new_keys.append(key + '1')
+            keys = new_keys
+
+        if character == '1':
+            for j in range(len(keys)):
+                keys[j] += '1'
+
+        if character == '0':
+            for j in range(len(keys)):
+                keys[j] += value[i]
+
+    return keys
 
 
 def mask_index(character: str, index: int) -> str:
@@ -35,7 +54,8 @@ def initialize(input: str):
             results = re.search('mem\[(.*)\] = (.*)', instruction)
             key = results.group(1)
             value = results.group(2)
-            put(key, int(value))
+            put(int(key), int(value))
+
 
 if __name__ == '__main__':
     with open('input.txt') as data:
