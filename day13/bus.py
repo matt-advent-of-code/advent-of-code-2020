@@ -1,3 +1,4 @@
+import numpy
 def arrival_time_time_for_bus(arrival_time: int, bus):
     time = bus
     while time <= arrival_time:
@@ -25,15 +26,18 @@ def earliest_subsequent_timestamp(busses: list) -> int:
     first_bus = int(busses[0])
     timestamp = first_bus
 
-    max_bus = get_max(busses)
-    index_of_max = busses.index(str(max_bus))
-    max_time_stamp = max_bus
-
-    while True:
-        if is_subsequent(busses, timestamp):
-            return timestamp
-        max_time_stamp += max_bus
-        timestamp = max_time_stamp - index_of_max
+    rate = int(busses[0])
+    timestamp = rate
+    busses_to_check = []
+    for bus in busses:
+        busses_to_check.append(bus)
+        while not is_subsequent(busses_to_check, timestamp):
+            timestamp += rate
+        rate = 1
+        for bus in busses_to_check:
+            if bus != 'x':
+                rate = rate * int(bus)
+    return timestamp
 
 
 def get_max(busses: list) -> str:

@@ -48,6 +48,11 @@ class MyTestCase(unittest.TestCase):
         timestamp = bus.earliest_subsequent_timestamp(buses)
         self.assertEqual(expected_timestamp, timestamp)
 
+    def test_test(self):
+        buses = ['67','7','x','59']
+        timestamp = bus.earliest_subsequent_timestamp(buses)
+        print(timestamp)
+
 
 if __name__ == '__main__':
     unittest.main()
