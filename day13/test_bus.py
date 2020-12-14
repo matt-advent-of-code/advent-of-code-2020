@@ -12,6 +12,42 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(expected_bus, best_bus)
         self.assertEqual(295, bus.solve(best_bus, arival_time))
 
+    def test_earliest_subsequent_timestamp(self):
+        buses = ['7', '13', 'x', 'x', '59', 'x', '31', '19']
+        expected_timestamp = 1068781
+        timestamp = bus.earliest_subsequent_timestamp(buses)
+        self.assertEqual(expected_timestamp, timestamp)
+
+    def test_earliest_subsequent_timestamp_example2(self):
+        buses = ['17','x','13','19']
+        expected_timestamp = 3417
+        timestamp = bus.earliest_subsequent_timestamp(buses)
+        self.assertEqual(expected_timestamp, timestamp)
+
+    def test_earliest_subsequent_timestamp_example3(self):
+        buses = ['67','7','59','61']
+        expected_timestamp = 754018
+        timestamp = bus.earliest_subsequent_timestamp(buses)
+        self.assertEqual(expected_timestamp, timestamp)
+
+    def test_earliest_subsequent_timestamp_example4(self):
+        buses = ['67','x','7','59','61']
+        expected_timestamp = 779210
+        timestamp = bus.earliest_subsequent_timestamp(buses)
+        self.assertEqual(expected_timestamp, timestamp)
+
+    def test_earliest_subsequent_timestamp_example5(self):
+        buses = ['67','7','x','59','61']
+        expected_timestamp = 1261476
+        timestamp = bus.earliest_subsequent_timestamp(buses)
+        self.assertEqual(expected_timestamp, timestamp)
+
+    def test_earliest_subsequent_timestamp_example6(self):
+        buses = ['1789','37','47','1889']
+        expected_timestamp = 1202161486
+        timestamp = bus.earliest_subsequent_timestamp(buses)
+        self.assertEqual(expected_timestamp, timestamp)
+
 
 if __name__ == '__main__':
     unittest.main()
