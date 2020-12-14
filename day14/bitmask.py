@@ -28,12 +28,9 @@ def apply_mask(value: str) -> list:
             keys = new_keys
 
         if character == '1':
-            for j in range(len(keys)):
-                keys[j] += '1'
-
+            keys = [key+'1' for key in keys]
         if character == '0':
-            for j in range(len(keys)):
-                keys[j] += value[i]
+            keys = [key + value[i] for key in keys]
 
     return keys
 
