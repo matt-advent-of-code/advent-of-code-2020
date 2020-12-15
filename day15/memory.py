@@ -30,5 +30,5 @@ if __name__ == '__main__':
     with open('input.txt') as data:
         starting_numbers = [int(line) for line in data.read().split(',')]
         seed(starting_numbers)
-        play_game(2020)
+        play_game(30000000)
         print(numbers[-1])

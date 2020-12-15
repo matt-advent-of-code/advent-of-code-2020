@@ -103,5 +103,13 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(expected_number, memory.numbers[-1])
 
 
+    def test_large_iterations(self):
+        starting_numbers = [0,3,6]
+        memory.seed(starting_numbers)
+        memory.play_game(30000000)
+        expected_number = 175594
+        self.assertEqual(expected_number, memory.numbers[-1])
+
+
 if __name__ == '__main__':
     unittest.main()
