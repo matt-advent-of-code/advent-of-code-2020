@@ -19,7 +19,7 @@ def get(key) -> int:
 
 def apply_mask(value: str) -> list:
     keys = ['']
-    for i,character in enumerate(list(mask)):
+    for i, character in enumerate(list(mask)):
         if character == 'X':
             new_keys = []
             for key in keys:
@@ -28,7 +28,7 @@ def apply_mask(value: str) -> list:
             keys = new_keys
 
         if character == '1':
-            keys = [key+'1' for key in keys]
+            keys = [key + '1' for key in keys]
         if character == '0':
             keys = [key + value[i] for key in keys]
 
@@ -48,7 +48,7 @@ def initialize(input: str):
             global mask
             mask = instruction.split('=')[1].strip()
         else:
-            results = re.search('mem\[(.*)\] = (.*)', instruction)
+            results = re.search(r'mem\[(.*)\] = (.*)', instruction)
             key = results.group(1)
             value = results.group(2)
             put(int(key), int(value))
