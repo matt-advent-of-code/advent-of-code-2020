@@ -84,6 +84,22 @@ nearby tickets:
         error_rate = ticket.calculate_error_rate(input)
         self.assertEqual(expected_error_rate, error_rate)
 
+    def test_translate_ticket(self):
+            input = """class: 0-1 or 4-19
+row: 0-5 or 8-19
+seat: 0-13 or 16-19
+
+your ticket:
+11,12,13
+
+nearby tickets:
+3,9,18
+15,1,5
+5,14,9"""
+            expected_ticket = {'row': 11, 'class': 12, 'seat': 13}
+            train_ticket = ticket.translate(input)
+            self.assertEqual(expected_ticket, train_ticket)
+
 
 if __name__ == '__main__':
     unittest.main()
