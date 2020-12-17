@@ -12,17 +12,8 @@ class MyTestCase(unittest.TestCase):
         energy_cube.init_state(starting_state)
         energy_cube.cycle()
         print(energy_cube.cubes)
-        self.assertEqual(11, energy_cube.get_active())
+        self.assertEqual(29, energy_cube.get_active())
 
-    def test_two_cycles(self):
-            starting_state = """.#.
-..#
-###"""
-            energy_cube.init_state(starting_state)
-            energy_cube.cycle()
-            self.assertEqual(11, energy_cube.get_active())
-            energy_cube.cycle()
-            self.assertEqual(21, energy_cube.get_active())
 
     def test_six_cycles(self):
             starting_state = """.#.
@@ -35,7 +26,7 @@ class MyTestCase(unittest.TestCase):
             energy_cube.cycle()
             energy_cube.cycle()
             energy_cube.cycle()
-            self.assertEqual(112, energy_cube.get_active())
+            self.assertEqual(848, energy_cube.get_active())
 
 
 if __name__ == '__main__':
