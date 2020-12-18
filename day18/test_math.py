@@ -23,8 +23,8 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(expected_answer, answer)
 
     def test_order(self):
-        expression = '1 + 2 * 3 + 4 * 5 + 6'
-        expected_answer = 71
+        expression = '5 * 2 + 2'
+        expected_answer = 20
         answer = new_math.calculate(expression)
         self.assertEqual(expected_answer, answer)
 
@@ -40,38 +40,47 @@ class MyTestCase(unittest.TestCase):
         answer = new_math.calculate(expression)
         self.assertEqual(expected_answer, answer)
 
-
     def test_example_1(self):
         expression = '2 * 3 + (4 * 5)'
-        expected_answer = 26
+        expected_answer = 46
         answer = new_math.calculate(expression)
         self.assertEqual(expected_answer, answer)
 
     def test_example_2(self):
         expression = '5 + (8 * 3 + 9 + 3 * 4 * 3)'
-        expected_answer = 437
+        expected_answer = 1445
         answer = new_math.calculate(expression)
         self.assertEqual(expected_answer, answer)
 
     def test_example_3(self):
         expression = '5 * 9 * (7 * 3 * 3 + 9 * 3 + (8 + 6 * 4))'
-        expected_answer = 12240
+        expected_answer = 669060
         answer = new_math.calculate(expression)
         self.assertEqual(expected_answer, answer)
 
     def test_example_4(self):
         expression = '((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2'
-        expected_answer = 13632
+        expected_answer = 23340
         answer = new_math.calculate(expression)
         self.assertEqual(expected_answer, answer)
 
-
-    def test_example_4_simp(self):
-        expression = '((1 + 1) * (1 + 1) + 6)'
-        expected_answer = 10
+    def test_multi_digit(self):
+        expression = '10 + 1'
+        expected_answer = 11
         answer = new_math.calculate(expression)
         self.assertEqual(expected_answer, answer)
 
+    def test_multi_digit_right(self):
+        expression = '10 + 10'
+        expected_answer = 20
+        answer = new_math.calculate(expression)
+        self.assertEqual(expected_answer, answer)
+
+    def test_simple_multiply(self):
+        expression = '5 * 4'
+        expected_answer = 20
+        answer = new_math.calculate(expression)
+        self.assertEqual(expected_answer, answer)
 
 
 if __name__ == '__main__':
