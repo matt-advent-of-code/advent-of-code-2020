@@ -127,3 +127,17 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+*.interp
+*.tokens
+
+
+/day19/part2/part2Listener.py
+/day19/part2/part2Parser.py
+/day19/part2/part2Lexer.py
+/day19/part1/part1Parser.py
+/day19/part1/part1Listener.py
+/day19/part1/part1Lexer.py
+/day19/simple/simpleLexer.py
+/day19/simple/simpleListener.py
+/day19/simple/simpleParser.py
