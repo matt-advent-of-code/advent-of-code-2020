@@ -4,8 +4,21 @@ import re
 def find_allergy_free_ingredients(input: str) -> list:
     foods = parse(input)
 
-    allergens = {}
+    allergens = find_allergy_ingredients(input)
     allergy_free_ingredients = []
+
+    for food in foods:
+        for ingredient in food['ingredients']:
+            if not contains_allergen(ingredient, allergens):
+                allergy_free_ingredients.append(ingredient)
+
+    return allergy_free_ingredients
+
+
+def find_allergy_ingredients(input: str):
+    foods = parse(input)
+
+    allergens = {}
     for food in foods:
         for allergen in food['allergens']:
             if allergen in allergens:
@@ -14,13 +27,7 @@ def find_allergy_free_ingredients(input: str) -> list:
             else:
                 allergens[allergen] = food['ingredients'].copy()
     reduce(allergens)
-
-    for food in foods:
-        for ingredient in food['ingredients']:
-            if not contains_allergen(ingredient, allergens):
-                allergy_free_ingredients.append(ingredient)
-
-    return allergy_free_ingredients
+    return allergens
 
 
 def reduce(allergens: dict):
@@ -32,6 +39,7 @@ def reduce(allergens: dict):
                     if ingredient in allergens[allergen_to_remove_ingredient]:
                         allergens[allergen_to_remove_ingredient].remove(ingredient)
                         reduce(allergens)
+
 
 def contains_allergen(ingredient: str, allergens: dict) -> bool:
     for allergen in allergens:
@@ -57,5 +65,8 @@ def parse(input: str) -> list:
 
 if __name__ == '__main__':
     with open('input.txt') as data:
-        allergy_free_ingredients = find_allergy_free_ingredients(data.read())
-        print(len(allergy_free_ingredients))
+        allergy_ingredients = find_allergy_ingredients(data.read())
+        keys = list(allergy_ingredients.keys())
+        keys.sort()
+        ingredients = [allergy_ingredients[key][0] for key in keys]
+        print(','.join(ingredients))
