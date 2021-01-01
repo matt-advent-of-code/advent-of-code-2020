@@ -6,7 +6,11 @@ class Cup:
 
 
 def play(input: str, rounds: int) -> str:
-    cups_list = [Cup(int(cup)) for cup in list(input)]
+    cups_list = [Cup(int(cup)) for cup in (list(input))]
+    max_cup = max([cup.number for cup in cups_list])
+    for i in range(max_cup + 1, 1000000 + 1):
+        cups_list.append(Cup(i))
+
     for i in range(len(cups_list) - 1):
         cups_list[i].next = cups_list[i + 1]
         cups_list[i].previous = cups_list[i - 1]
@@ -26,7 +30,7 @@ def play(input: str, rounds: int) -> str:
         insert_cup(destination, picked_up_cups)
         head = head.next
 
-    return get_order(cups)
+    return cups[1].next.number, cups[1].next.next.number
 
 
 def pop_next_three_cups(cup: Cup) -> Cup:
@@ -83,4 +87,5 @@ def parse(input: str) -> dict:
     head = cups_list[0]
 
 if __name__ == '__main__':
-    print(play('467528193', 100))
+    cups = play('467528193', 10000000)
+    print(cups[0] * cups[1])

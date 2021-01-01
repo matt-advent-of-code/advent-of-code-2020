@@ -15,11 +15,11 @@ class MyTestCase(unittest.TestCase):
         order = crab.play(input, 100)
         self.assertEqual(expected_order, order)
 
-#    def test_10_000_000(self):
-#        input = '389125467'
-#        expected = (934001, 159792)
-#        cups = crab.play(input, 20)
-#        self.assertEqual(expected, cups)
+    def test_10_000_000(self):
+        input = '389125467'
+        expected = (934001, 159792)
+        cups = crab.play(input, 10000000)
+        self.assertEqual(expected, cups)
 
 
 if __name__ == '__main__':
