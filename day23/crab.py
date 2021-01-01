@@ -1,30 +1,86 @@
+class Cup:
+    def __init__(self, number: int, next=None, previous=None):
+        self.number = number
+        self.next = next
+        self.previous = previous
+
+
 def play(input: str, rounds: int) -> str:
-    cups = list(input)
+    cups_list = [Cup(int(cup)) for cup in list(input)]
+    for i in range(len(cups_list) - 1):
+        cups_list[i].next = cups_list[i + 1]
+        cups_list[i].previous = cups_list[i - 1]
+    cups_list[-1].next = cups_list[0]
+    cups_list[-1].previous = cups_list[-2]
+
+    cups = {cup.number: cup for cup in cups_list}
+    head = cups_list[0]
+
+    max_cup = max([cup for cup in list(cups.keys())])
+
     for _ in range(rounds):
-        cups_copy = cups.copy()
-        picked_up_cups = [
-            cups_copy.pop(1),
-            cups_copy.pop(1),
-            cups_copy.pop(1)
-        ]
+        picked_up_cups = pop_next_three_cups(head)
 
-        d = destination_cup_index(cups[0], cups_copy)
-        cups_copy[d+1:d+1] = picked_up_cups
-        current_cup = cups_copy.pop(0)
-        cups_copy.append(current_cup)
-        cups = cups_copy
+        destination = destination_cup(head, cups, [picked_up_cups.number, picked_up_cups.next.number,
+                                                   picked_up_cups.next.next.number], max_cup)
+        insert_cup(destination, picked_up_cups)
+        head = head.next
 
-    i = cups.index('1')
-    return ''.join(cups[i + 1:] + cups[:i])
+    return get_order(cups)
 
 
-def destination_cup_index(current_cup: int, cups: list) -> int:
-    for i in range(int(current_cup) - 1, 0, -1):
-        if str(i) in cups:
-            return cups.index(str(i))
-    highest_cup = max([int(cup) for cup in cups])
-    return cups.index(str(highest_cup))
+def pop_next_three_cups(cup: Cup) -> Cup:
+    cup_to_remove = cup.next
 
+    next_in_line = cup_to_remove.next.next.next
+    cup.next = next_in_line
+    next_in_line.previous = cup
+
+    cup_to_remove.previous = None
+    cup_to_remove.next.next.next = None
+
+    return cup_to_remove
+
+
+def destination_cup(head: Cup, cups: dict, picked_up_cups: list, max_cup: int) -> int:
+    for i in range(head.number - 1, 0, -1):
+        if i in cups and i not in picked_up_cups:
+            return cups[i]
+
+    for i in range(max_cup, 0, -1):
+        if i in cups and i not in picked_up_cups:
+            return cups[i]
+
+
+def insert_cup(destination: Cup, cup_to_insert: Cup):
+    next = destination.next
+    destination.next = cup_to_insert
+    cup_to_insert.previous = destination
+
+    next.previous = cup_to_insert.next.next
+    cup_to_insert.next.next.next = next
+
+
+def get_order(cups: dict) -> str:
+    head = cups[1]
+    order = ''
+    while head.next != cups[1]:
+        order += str(head.next.number)
+        head = head.next
+
+    return order
+
+
+def parse(input: str) -> dict:
+    cups_list = [Cup(int(cup)) for cup in list(input)]
+    for i in range(len(cups_list) - 1):
+        cups_list[i].next = cups_list[i + 1]
+        cups_list[i].previous = cups_list[i - 1]
+    cups_list[-1].next = cups_list[0]
+    cups_list[-1].previous = cups_list[-2]
+
+    return {cup.number: cup for cup in cups_list}
+    head = cups_list[0]
 
 if __name__ == '__main__':
     print(play('467528193', 100))
