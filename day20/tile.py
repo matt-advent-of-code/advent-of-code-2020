@@ -159,13 +159,18 @@ def is_left_corner_set(corner: Tile, sides: list):
 
 
 def recontruct(input: str) -> list:
+    print('starting parse')
     tiles = parse(input)
+    print('parsed')
     side_length = int(math.sqrt(len(tiles)))
     corner_tiles = find_corners(tiles)
+    print('corners found')
     side_tiles = find_side_tiles(tiles)
+    print('sides found')
 
+    print('setting left corner')
     set_left_corner(corner_tiles[0], side_tiles)
-
+    print('left corner has been set')
     tiles = [tile for tile in tiles if tile not in corner_tiles and tile not in side_tiles]
     reconstructed_tiles = [
         [corner_tiles[0]]
@@ -240,11 +245,56 @@ def recontruct(input: str) -> list:
         )
     return numpy.concatenate(rows, axis=0).tolist()
 
+def count_sea_monsters(tiles: list) -> int:
+    sea_monster_count = 0
+    while sea_monster_count == 0:
+        for i in range(len(tiles) - 2):
+            for j in range(len(tiles[i]) - 18):
+                if is_sea_monster(i, j, tiles):
+                    sea_monster_count += 1
+        if sea_monster_count > 0:
+            return sea_monster_count
+        tiles = numpy.fliplr(tiles)
+        for i in range(len(tiles) - 2):
+            for j in range(len(tiles[i]) - 18):
+                if is_sea_monster(i, j, tiles):
+                    sea_monster_count += 1
+        if sea_monster_count > 0:
+            return sea_monster_count
+        tiles = numpy.fliplr(tiles)
+        tiles = numpy.flipud(tiles)
+        for i in range(len(tiles) - 2):
+            for j in range(len(tiles[i]) - 18):
+                if is_sea_monster(i, j, tiles):
+                    sea_monster_count += 1
+        tiles = numpy.flipud(tiles)
+        tiles = rotate(tiles)
+        print('rotated')
+
+    return sea_monster_count
+
+def is_sea_monster(i: int, j: int, tiles: list) -> bool:
+    """
+                      #
+    #    ##    ##    ###
+     #  #  #  #  #  #
+    """
+    return tiles[i][j + 18] == '#'\
+           and tiles[i + 1][j] == '#' and tiles[i + 1][j + 5] == '#' and tiles[i + 1][j + 6] == '#' and tiles[i + 1][j + 11] == '#' and tiles[i + 1][j + 12] == '#' and tiles[i + 1][j + 17] == '#' and tiles[i + 1][j + 18] == '#' and tiles[i + 1][j + 19] == '#'\
+           and tiles[i + 2][j + 1] == '#' and tiles[i + 2][j + 4] == '#' and tiles[i + 2][j + 7] == '#' and tiles[i + 2][j + 10] == '#' and tiles[i + 2][j + 13] == '#' and tiles[i + 2][j + 16] == '#'
+
+
+def calc_roughness(input: str) -> int:
+    print('starting recontruct')
+    tiles = recontruct(input)
+    print('completed reconstruct')
+    sea_monsters = count_sea_monsters(tiles)
+
+    return sum(row.count('#') for row in tiles) - (sea_monsters * 15)
+
+
+
 
 if __name__ == '__main__':
     with open('input.txt') as data:
-        ids = []
-        for corner in corners(data.read()):
-            ids.append(corner.id)
-            print(corner.id)
-        print(numpy.prod(ids))
+        print(calc_roughness(data.read()))
